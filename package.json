@@ -1,0 +1,29 @@
+{
+  "name": "filestorage-server-streams-example",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "al.kolpak@gmail.com",
+  "license": "MIT",
+  "scripts": {
+    "start": "NODE_PATH=./ ./index.js",
+    "dev": "NODE_PATH=./ ./node_modules/.bin/nodemon index.js",
+    "test": "NODE_PATH=./ ./node_modules/.bin/mocha --timeout 60000 --exit test/*.test.js",
+    "lint": "./node_modules/.bin/eslint --ext .js ."
+  },
+  "dependencies": {
+    "mime": "^2.3.1",
+    "ramda": "^0.25.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^4.2.0",
+    "eslint": "^5.3.0",
+    "eslint-config-google": "^0.10.0",
+    "eslint-plugin-mocha": "^5.2.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.4"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}
