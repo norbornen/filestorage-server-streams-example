@@ -36,7 +36,10 @@
           let btn = document.createElement('button');
           item.appendChild(btn);
           btn.appendChild(document.createTextNode('x'));
-          item.appendChild(document.createTextNode(files[i]));
+          let href = document.createElement('a');
+          item.appendChild(href);
+          href.appendChild(document.createTextNode(files[i]));
+          href.href = `${files[i]}`;
           list.appendChild(item);
           btn.onclick = () => {
             const x = new XMLHttpRequest();
