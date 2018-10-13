@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
 const crypto = require('crypto');
+const config = require('config');
 const server = require('../lib/server');
 
 const readFile = promisify(fs.readFile);
@@ -30,7 +31,7 @@ describe('API', async () => {
         await res.body.should.be.empty;
     });
     it('index.html', async () => {
-        const content = await readFile(path.join(__dirname, '../public/index.html'), {encoding: 'utf-8'});
+        const content = await readFile(path.join(config.get('publicRoot'), 'index.html'), {encoding: 'utf-8'});
         let res = await chai.request(server).get('/');
         await res.should.have.status(200);
         await res.text.should.be.eql(content);
@@ -54,7 +55,7 @@ describe('API', async () => {
         await res.should.have.status(404);
         res = await chai.request(server).get('/___test.txt');
         await res.should.have.status(200);
-        const content = await readFile(path.join(__dirname, '../files/___test.txt'), {encoding: 'utf-8'});
+        const content = await readFile(path.join(config.get('filesRoot'), '___test.txt'), {encoding: 'utf-8'});
         await res.text.should.be.eql(content);
     });
     it('DELETE', async () => {
