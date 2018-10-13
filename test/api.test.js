@@ -50,6 +50,11 @@ describe('API', async () => {
             .send(crypto.randomBytes(1024*40).toString('hex'));
         await res.should.have.status(200);
     });
+    it('UPLOAD WHEN EXIST', async () => {
+        let res = await chai.request(server).post('/___test.txt').type('form')
+            .send(crypto.randomBytes(1024*40).toString('hex'));
+        await res.should.have.status(409);
+    });
     it('GET', async () => {
         let res = await chai.request(server).get('/../a.txt');
         await res.should.have.status(404);
