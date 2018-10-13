@@ -24,6 +24,30 @@
   </form>
 
   <script>
+    document.body.onload = function() {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', '/list');
+      xhr.send();
+      xhr.onload = function () {
+        const list = document.createElement('ul');
+        const files = JSON.parse(this.response).files;
+        for (let i = 0; i < files.length; i++) {
+          let item = document.createElement('li');
+          let btn = document.createElement('button');
+          item.appendChild(btn);
+          btn.appendChild(document.createTextNode('x'));
+          item.appendChild(document.createTextNode(files[i]));
+          list.appendChild(item);
+          btn.onclick = () => {
+            const x = new XMLHttpRequest();
+            x.open('DELETE', files[i]);
+            x.send();
+            item.style.display = 'none';
+          };
+        }
+        document.body.appendChild(list);
+      };
+    }
 
     document.onsubmit = function (event) {
       event.preventDefault();
