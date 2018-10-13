@@ -1,10 +1,10 @@
-const {describe, it} = require('mocha');
+const {describe, it, before, after} = require('mocha');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
-const crypto = require("crypto");
+const crypto = require('crypto');
 const server = require('../lib/server');
 
 const readFile = promisify(fs.readFile);
@@ -18,8 +18,7 @@ describe('API', async () => {
                 throw err;
             }
             done();
-        })
-        .on('error', (err) => {
+        }).on('error', (err) => {
             throw err;
         });
     });
@@ -44,14 +43,14 @@ describe('API', async () => {
     });
     it('UPLOAD', async () => {
         // res = await chai.request(server).post('/___test.txt').type('form')
-        //         .send(crypto.randomBytes(1024*100).toString('hex'));        
+        //         .send(crypto.randomBytes(1024*100).toString('hex'));
         // await res.should.have.status(413);
-        res = await chai.request(server).post('/___test.txt').type('form')
-                .send(crypto.randomBytes(1024*40).toString('hex'));
+        let res = await chai.request(server).post('/___test.txt').type('form')
+            .send(crypto.randomBytes(1024*40).toString('hex'));
         await res.should.have.status(200);
     });
     it('GET', async () => {
-        res = await chai.request(server).get('/../a.txt');
+        let res = await chai.request(server).get('/../a.txt');
         await res.should.have.status(404);
         res = await chai.request(server).get('/___test.txt');
         await res.should.have.status(200);
@@ -59,13 +58,13 @@ describe('API', async () => {
         await res.text.should.be.eql(content);
     });
     it('DELETE', async () => {
-        res = await chai.request(server).delete('/___.txt');
+        let res = await chai.request(server).delete('/___.txt');
         await res.should.have.status(404);
         res = await chai.request(server).delete('/___test.txt');
         await res.should.have.status(200);
     });
     it('NOT EXISTS PATH 2', async () => {
-        res = await chai.request(server).get('/___test.txt');
+        let res = await chai.request(server).get('/___test.txt');
         await res.should.have.status(404);
     });
 

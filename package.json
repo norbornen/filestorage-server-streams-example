@@ -7,7 +7,7 @@
   "scripts": {
     "start": "NODE_PATH=./ ./index.js",
     "dev": "NODE_PATH=./ ./node_modules/.bin/nodemon index.js",
-    "test": "NODE_PATH=./ ./node_modules/.bin/mocha --timeout 60000 --exit test/*.test.js",
+    "test": "NODE_PATH=./ ./node_modules/.bin/mocha --timeout 60000 --exit --reporter nyan --recursive test/*.test.js",
     "lint": "./node_modules/.bin/eslint --ext .js ."
   },
   "dependencies": {
