@@ -1,3 +1,4 @@
+// @ts-check
 const {describe, it, before, after} = require('mocha');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -9,7 +10,8 @@ const config = require('config');
 const server = require('../lib/server');
 
 const readFile = promisify(fs.readFile);
-const should = chai.should();
+
+chai.should();
 chai.use(chaiHttp);
 
 describe('API', async () => {
@@ -26,13 +28,13 @@ describe('API', async () => {
     after(() => server.close());
 
     it('favicon.ico', async () => {
-        let res = await chai.request(server).get('/favicon.ico');
+        const res = await chai.request(server).get('/favicon.ico');
         await res.should.have.status(204);
         await res.body.should.be.empty;
     });
     it('index.html', async () => {
         const content = await readFile(path.join(config.get('publicRoot'), 'index.html'), {encoding: 'utf-8'});
-        let res = await chai.request(server).get('/');
+        const res = await chai.request(server).get('/');
         await res.should.have.status(200);
         await res.text.should.be.eql(content);
     });
@@ -46,12 +48,12 @@ describe('API', async () => {
         // res = await chai.request(server).post('/___test.txt').type('form')
         //         .send(crypto.randomBytes(1024*100).toString('hex'));
         // await res.should.have.status(413);
-        let res = await chai.request(server).post('/___test.txt').type('form')
+        const res = await chai.request(server).post('/___test.txt').type('form')
             .send(crypto.randomBytes(1024*40).toString('hex'));
         await res.should.have.status(200);
     });
     it('UPLOAD WHEN EXIST', async () => {
-        let res = await chai.request(server).post('/___test.txt').type('form')
+        const res = await chai.request(server).post('/___test.txt').type('form')
             .send(crypto.randomBytes(1024*40).toString('hex'));
         await res.should.have.status(409);
     });
@@ -70,7 +72,7 @@ describe('API', async () => {
         await res.should.have.status(200);
     });
     it('NOT EXISTS PATH 2', async () => {
-        let res = await chai.request(server).get('/___test.txt');
+        const res = await chai.request(server).get('/___test.txt');
         await res.should.have.status(404);
     });
 
