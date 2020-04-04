@@ -25,10 +25,51 @@
 
   <script>
     document.body.onload = function() {
+      loadList();
+    }
+
+    document.onsubmit = function (event) {
+      event.preventDefault();
+
+      const form = event.target;
+      if (!form.file.value) return;
+
+      //  /my/path/file.ext -> /file.ext
+      const fileUrl = '/' + form.file.value.replace(/.*[\\\/]/, '');
+
+      const xhr = new XMLHttpRequest();
+
+      xhr.onload = function () {
+        alert(`${xhr.status}: ${xhr.responseText || '-'}`);
+        loadList();
+      };
+
+      switch (event.target.id) {
+        case 'POST':
+          xhr.open('POST', fileUrl);
+          xhr.send(form.file.files[0]);
+          break;
+
+        case 'DELETE':
+          xhr.open('DELETE', fileUrl);
+          xhr.send();
+          break;
+
+        case 'GET':
+          xhr.open('GET', fileUrl);
+          xhr.send();
+          break;
+      }
+
+    };
+
+    function loadList() {
       const xhr = new XMLHttpRequest();
       xhr.open('GET', '/list');
       xhr.send();
       xhr.onload = function () {
+        [...document.querySelectorAll('ul')].forEach((el) => el.remove());
+
         const list = document.createElement('ul');
         const files = JSON.parse(this.response).files;
         for (let i = 0; i < files.length; i++) {
@@ -51,40 +92,6 @@
         document.body.appendChild(list);
       };
     }
-
-    document.onsubmit = function (event) {
-      event.preventDefault();
-
-      const form = event.target;
-      if (!form.file.value) return;
-
-      //  /my/path/file.ext -> /file.ext
-      const fileUrl = '/' + form.file.value.replace(/.*[\\\/]/, '');
-
-      const xhr = new XMLHttpRequest();
-
-      xhr.onload = function () {
-        alert(`${xhr.status}: ${xhr.responseText}`);
-      };
-
-      switch (event.target.id) {
-        case 'POST':
-          xhr.open('POST', fileUrl);
-          xhr.send(form.file.files[0]);
-          break;
-
-        case 'DELETE':
-          xhr.open('DELETE', fileUrl);
-          xhr.send();
-          break;
-
-        case 'GET':
-          xhr.open('GET', fileUrl);
-          xhr.send();
-          break;
-      }
-
-    };
 
   </script>
 </body>
